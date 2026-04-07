@@ -11,11 +11,22 @@ export default function Maincategory() {
     const [selectedCategory, setSelectedCategory] = useState("");
     const [selectedSubcategory, setSelectedSubcategory] = useState("");
     const [selectedBrand, setSelectedBrand] = useState("");
+    const [allproducts, setAllProducts] = useState([]);
     useEffect(() => {
         fetch("http://localhost:3001/categories" , {method: "GET",})
             .then((response) => response.json())    
             .then((data) => {
                 setCategories(data);
+            })
+            .catch((error) => {
+                console.error("Error fetching data:", error);
+            });
+
+
+          fetch("http://localhost:3001/products" , {method: "GET",})
+            .then((response) => response.json())    
+            .then((data) => {
+                setAllProducts(data);
             })
             .catch((error) => {
                 console.error("Error fetching data:", error);
@@ -98,33 +109,27 @@ export default function Maincategory() {
 
     }
 
-    const handleButtonClick = () => {
+    const handleButtonResetClick = () => {
         // Handle button click event
-        alert("Button clicked!");
-        // fetch(`http://localhost:3001/products?brandId=${products}`, {method: "GET",})
-        //     .then((response) => response.json())
-        //     .then((data) => {
-        //         // Handle the products data as needed
-        //         console.log("Products for selected brand:", data);
-        //     })
-        //     .catch((error) => {
-        //         console.error("Error fetching products:", error);
-        //     });
+        setSubcategories([]);
+        setBrands([]);
+        setProducts([]);
+        setSelectedBrand("");
+        setSelectedSubcategory("");
+        setSelectedCategory("");
     }
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
       <nav className="product-breadcrumb" aria-label="breadcrumb">
-
          Home 
           {selectedCategory && ` > ${categories.find(categories => categories.id === selectedCategory)?.name || ''}`}
           {selectedSubcategory && ` > ${subcategories.find(subcategories => subcategories.id === selectedSubcategory)?.name || ''}`}
           {selectedBrand && ` > ${brands.find(brands => brands.id === selectedBrand)?.name || ''}`}
-
       </nav>  
       <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
         Main Category Item
       </h1>
-      <select onChange={handleCategoryChange} className="mt-4 p-2 border border-gray-300 rounded">
+      <select onChange={handleCategoryChange} className="mt-4 p-2 border border-gray-300 rounded" name="category">
           <option value="All">Choose From The Options Here</option>
         {categories.map((item) => (
           <option key={item.id} value={item.id}>
@@ -132,7 +137,7 @@ export default function Maincategory() {
           </option>
         ))}
       </select>
-      <select onChange={handleSubcategoryChange} className="mt-4 p-2 border border-gray-300 rounded">
+      <select onChange={handleSubcategoryChange} className="mt-4 p-2 border border-gray-300 rounded" name="subcategory">
           <option value="All">Choose From The Options Here</option>
         {subcategories.map((item) => (
           <option key={item.id} value={item.id}>
@@ -140,7 +145,7 @@ export default function Maincategory() {
           </option>
         ))}
       </select>
-      <select onChange={handleBrandChange} className="mt-4 p-2 border border-gray-300 rounded">
+      <select onChange={handleBrandChange} className="mt-4 p-2 border border-gray-300 rounded" name="brand">
         <option value="All">Choose From The Options Here</option>
         {brands.map((item) => (
           <option key={item.id} value={item.id}>
@@ -148,14 +153,27 @@ export default function Maincategory() {
           </option>
         ))}
       </select>
-      {/* <button className="mt-4 px-4 py-2 bg-blue-500 text-white rounded" onClick={handleButtonClick}>
-        Click Me
-      </button> */}
-      {products.map((item) => (
-        <div key={item.id} className="flex flex-col items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">{item.name}</h2>
-        </div>
-        ))}
+      <button className="mt-4 px-4 py-2 bg-blue-500 text-white rounded" onClick={handleButtonResetClick}>
+        Reset
+      </button>
+      <br></br>
+      { 
+       selectedBrand!== "" ?         
+       products.map((item) => (
+        <section key={item.id}>
+            <div key={item.id} className="flex flex-col items-center justify-center bg-zinc-50 font-sans dark:bg-black">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">{item.name}</h2>
+            </div>
+        </section>)) 
+        : allproducts.map((item) => (
+        <section key={item.id}>
+            <div key={item.id} className="flex flex-col items-center justify-center bg-zinc-50 font-sans dark:bg-black">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">{item.name}</h2>
+            </div>
+        </section>))
+      }
+
+
     </div>
   );
 }
