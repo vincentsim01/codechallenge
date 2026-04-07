@@ -23,9 +23,20 @@ export default function Maincategory() {
     }, []);
     const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedCategoryId = event.target.value;
-        setSelectedCategory(selectedCategoryId);
-        setSelectedSubcategory("");
-        setSelectedBrand("");
+        if (selectedCategoryId === "All") {
+            setSelectedCategory("");
+            setSelectedSubcategory("");
+            setSelectedBrand("");
+            // setCategories([]);
+            setSubcategories([]);
+            setBrands([]);
+            setProducts([]);
+            return;
+        } else {
+            setSelectedCategory(selectedCategoryId);
+            setSelectedSubcategory("");
+            setSelectedBrand("");
+        }
         console.log("Selected Category ID:", selectedCategoryId);
         fetch(`http://localhost:3001/subcategories?categoryId=${selectedCategoryId}`, {method: "GET",})
             .then((response) => response.json())
@@ -39,6 +50,15 @@ export default function Maincategory() {
 
     const handleSubcategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedSubcategoryId = event.target.value;
+        if (selectedSubcategoryId === "All") {
+            setSelectedSubcategory("");
+            setSelectedBrand("");
+            setSubcategories([]);
+            setBrands([]);
+            setProducts([]);
+            return;
+        }
+
         setSelectedSubcategory(selectedSubcategoryId);
         setSelectedBrand("");
         console.log("Selected Subcategory ID:", selectedSubcategoryId);
@@ -56,6 +76,12 @@ export default function Maincategory() {
 
     const handleBrandChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedBrandId = event.target.value;
+        if (selectedBrandId === "All") {
+            setSelectedBrand("");
+            setBrands([]);
+            setProducts([]);
+            return;
+        }
         setSelectedBrand(selectedBrandId);
         console.log("Selected Brand ID:", selectedBrandId);
         fetch(`http://localhost:3001/products?brandId=${selectedBrandId}`, {method: "GET",})
@@ -99,7 +125,7 @@ export default function Maincategory() {
         Main Category Item
       </h1>
       <select onChange={handleCategoryChange} className="mt-4 p-2 border border-gray-300 rounded">
-          <option value="">Choose From The Options Here</option>
+          <option value="All">Choose From The Options Here</option>
         {categories.map((item) => (
           <option key={item.id} value={item.id}>
             {item.name}
@@ -107,7 +133,7 @@ export default function Maincategory() {
         ))}
       </select>
       <select onChange={handleSubcategoryChange} className="mt-4 p-2 border border-gray-300 rounded">
-          <option value="">Choose From The Options Here</option>
+          <option value="All">Choose From The Options Here</option>
         {subcategories.map((item) => (
           <option key={item.id} value={item.id}>
             {item.name}
@@ -115,7 +141,7 @@ export default function Maincategory() {
         ))}
       </select>
       <select onChange={handleBrandChange} className="mt-4 p-2 border border-gray-300 rounded">
-        <option value="">Choose From The Options Here</option>
+        <option value="All">Choose From The Options Here</option>
         {brands.map((item) => (
           <option key={item.id} value={item.id}>
             {item.name}
