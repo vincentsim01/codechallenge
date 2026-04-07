@@ -2,6 +2,9 @@
 
 import React, {useState, useEffect} from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+
 
 export default function Maincategory() {
     const [categories, setCategories] = useState([]);
@@ -12,6 +15,13 @@ export default function Maincategory() {
     const [selectedSubcategory, setSelectedSubcategory] = useState("");
     const [selectedBrand, setSelectedBrand] = useState("");
     const [allproducts, setAllProducts] = useState([]);
+    const searchParams = useSearchParams();
+    const selectedCategoryparam = searchParams.get("category") || "";
+    const selectedSubcategoryparam = searchParams.get("subcategory") || "";
+    const selectedBrandparam = searchParams.get("brand") || "";
+
+
+    const router = useRouter();
     useEffect(() => {
         fetch("http://localhost:3001/categories" , {method: "GET",})
             .then((response) => response.json())    
@@ -32,6 +42,57 @@ export default function Maincategory() {
                 console.error("Error fetching data:", error);
             });
     }, []);
+
+useEffect(() => {
+  if (selectedCategoryparam) {
+    fetch(`http://localhost:3001/subcategories?categoryId=${selectedCategoryparam}`)
+      .then(res => res.json())
+      .then(setSubcategories);
+  }
+}, [selectedCategoryparam]);
+
+useEffect(() => {
+  if (selectedSubcategoryparam) {
+    fetch(`http://localhost:3001/brands?subCategoryId=${selectedSubcategoryparam}`)
+      .then(res => res.json())
+      .then(setBrands);
+  }
+}, [selectedSubcategoryparam]);
+
+useEffect(() => {
+  if (selectedBrandparam) {
+    fetch(`http://localhost:3001/products?brandId=${selectedBrandparam}`)
+      .then(res => res.json())
+      .then(setProducts);
+  }
+}, [selectedBrandparam]);
+
+    const updateURL = (key: string, value: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+
+      if (value) {
+        params.set(key, value);
+      } else {
+        params.delete(key);
+      } 
+
+      // Reset cascading
+      if (key === "category") {
+        params.delete("subcategory");
+        params.delete("brand");
+      }
+      if (key === "subcategory") {
+        params.delete("brand");
+      }
+
+      router.replace(`?${params.toString()}`);
+    };
+
+  const resetFilters = () => {
+    router.replace("?");
+  };
+
+
     const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedCategoryId = event.target.value;
         if (selectedCategoryId === "All") {
@@ -129,7 +190,7 @@ export default function Maincategory() {
       <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
         Main Category Item
       </h1>
-      <select onChange={handleCategoryChange} className="mt-4 p-2 border border-gray-300 rounded" name="category">
+      <select onChange={(e) => updateURL("category", e.target.value)} className="mt-4 p-2 border border-gray-300 rounded" name="category">
           <option value="All">Choose From The Options Here</option>
         {categories.map((item) => (
           <option key={item.id} value={item.id}>
@@ -137,7 +198,7 @@ export default function Maincategory() {
           </option>
         ))}
       </select>
-      <select onChange={handleSubcategoryChange} className="mt-4 p-2 border border-gray-300 rounded" name="subcategory">
+      <select onChange={(e) => updateURL("subcategory", e.target.value)} className="mt-4 p-2 border border-gray-300 rounded" name="subcategory">
           <option value="All">Choose From The Options Here</option>
         {subcategories.map((item) => (
           <option key={item.id} value={item.id}>
@@ -145,7 +206,7 @@ export default function Maincategory() {
           </option>
         ))}
       </select>
-      <select onChange={handleBrandChange} className="mt-4 p-2 border border-gray-300 rounded" name="brand">
+      <select onChange={(e) => updateURL("brand", e.target.value)} className="mt-4 p-2 border border-gray-300 rounded" name="brand">
         <option value="All">Choose From The Options Here</option>
         {brands.map((item) => (
           <option key={item.id} value={item.id}>
@@ -153,12 +214,12 @@ export default function Maincategory() {
           </option>
         ))}
       </select>
-      <button className="mt-4 px-4 py-2 bg-blue-500 text-white rounded" onClick={handleButtonResetClick}>
+      <button className="mt-4 px-4 py-2 bg-blue-500 text-white rounded" onClick={resetFilters}>
         Reset
       </button>
       <br></br>
       { 
-       selectedBrand!== "" ?         
+       selectedBrandparam!== "" ?         
        products.map((item) => (
         <section key={item.id}>
             <div key={item.id} className="flex flex-col items-center justify-center bg-zinc-50 font-sans dark:bg-black">
