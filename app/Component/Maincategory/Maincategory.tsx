@@ -1,12 +1,16 @@
 "use client"
 
 import React, {useState, useEffect} from "react";
+import Link from "next/link";
 
 export default function Maincategory() {
     const [categories, setCategories] = useState([]);
     const [subcategories, setSubcategories] = useState([]);
     const [brands, setBrands] = useState([]);
     const [products, setProducts] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState("");
+    const [selectedSubcategory, setSelectedSubcategory] = useState("");
+    const [selectedBrand, setSelectedBrand] = useState("");
     useEffect(() => {
         fetch("http://localhost:3001/categories" , {method: "GET",})
             .then((response) => response.json())    
@@ -19,6 +23,9 @@ export default function Maincategory() {
     }, []);
     const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedCategoryId = event.target.value;
+        setSelectedCategory(selectedCategoryId);
+        setSelectedSubcategory("");
+        setSelectedBrand("");
         console.log("Selected Category ID:", selectedCategoryId);
         fetch(`http://localhost:3001/subcategories?categoryId=${selectedCategoryId}`, {method: "GET",})
             .then((response) => response.json())
@@ -32,6 +39,8 @@ export default function Maincategory() {
 
     const handleSubcategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedSubcategoryId = event.target.value;
+        setSelectedSubcategory(selectedSubcategoryId);
+        setSelectedBrand("");
         console.log("Selected Subcategory ID:", selectedSubcategoryId);
         fetch(`http://localhost:3001/brands?subCategoryId=${selectedSubcategoryId}`, {method: "GET",})
             .then((response) => response.json())
@@ -47,6 +56,7 @@ export default function Maincategory() {
 
     const handleBrandChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedBrandId = event.target.value;
+        setSelectedBrand(selectedBrandId);
         console.log("Selected Brand ID:", selectedBrandId);
         fetch(`http://localhost:3001/products?brandId=${selectedBrandId}`, {method: "GET",})
             .then((response) => response.json())
@@ -77,6 +87,14 @@ export default function Maincategory() {
     }
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
+      <nav className="product-breadcrumb" aria-label="breadcrumb">
+
+         Home 
+          {selectedCategory && ` > ${categories.find(categories => categories.id === selectedCategory)?.name || ''}`}
+          {selectedSubcategory && ` > ${subcategories.find(subcategories => subcategories.id === selectedSubcategory)?.name || ''}`}
+          {selectedBrand && ` > ${brands.find(brands => brands.id === selectedBrand)?.name || ''}`}
+
+      </nav>  
       <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
         Main Category Item
       </h1>
