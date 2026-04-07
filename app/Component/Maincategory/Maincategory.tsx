@@ -33,7 +33,7 @@ export default function Maincategory() {
     const handleSubcategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedSubcategoryId = event.target.value;
         console.log("Selected Subcategory ID:", selectedSubcategoryId);
-        fetch(`http://localhost:3001/brands?subcategoryId=${selectedSubcategoryId}`, {method: "GET",})
+        fetch(`http://localhost:3001/brands?subCategoryId=${selectedSubcategoryId}`, {method: "GET",})
             .then((response) => response.json())
             .then((data) => {
                 // Handle the items data as needed
@@ -81,6 +81,7 @@ export default function Maincategory() {
         Main Category Item
       </h1>
       <select onChange={handleCategoryChange} className="mt-4 p-2 border border-gray-300 rounded">
+          <option value="">Choose From The Options Here</option>
         {categories.map((item) => (
           <option key={item.id} value={item.id}>
             {item.name}
@@ -88,6 +89,7 @@ export default function Maincategory() {
         ))}
       </select>
       <select onChange={handleSubcategoryChange} className="mt-4 p-2 border border-gray-300 rounded">
+          <option value="">Choose From The Options Here</option>
         {subcategories.map((item) => (
           <option key={item.id} value={item.id}>
             {item.name}
@@ -95,15 +97,16 @@ export default function Maincategory() {
         ))}
       </select>
       <select onChange={handleBrandChange} className="mt-4 p-2 border border-gray-300 rounded">
+        <option value="">Choose From The Options Here</option>
         {brands.map((item) => (
           <option key={item.id} value={item.id}>
             {item.name}
           </option>
         ))}
       </select>
-      <button className="mt-4 px-4 py-2 bg-blue-500 text-white rounded" onClick={handleButtonClick}>
+      {/* <button className="mt-4 px-4 py-2 bg-blue-500 text-white rounded" onClick={handleButtonClick}>
         Click Me
-      </button>
+      </button> */}
       {products.map((item) => (
         <div key={item.id} className="flex flex-col items-center justify-center bg-zinc-50 font-sans dark:bg-black">
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white">{item.name}</h2>
