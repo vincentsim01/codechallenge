@@ -93,104 +93,104 @@ useEffect(() => {
   };
 
 
-    const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const selectedCategoryId = event.target.value;
-        if (selectedCategoryId === "All") {
-            setSelectedCategory("");
-            setSelectedSubcategory("");
-            setSelectedBrand("");
-            // setCategories([]);
-            setSubcategories([]);
-            setBrands([]);
-            setProducts([]);
-            return;
-        } else {
-            setSelectedCategory(selectedCategoryId);
-            setSelectedSubcategory("");
-            setSelectedBrand("");
-        }
-        console.log("Selected Category ID:", selectedCategoryId);
-        fetch(`http://localhost:3001/subcategories?categoryId=${selectedCategoryId}`, {method: "GET",})
-            .then((response) => response.json())
-            .then((data) => {
-                setSubcategories(data);
-            })
-            .catch((error) => {
-                console.error("Error fetching subcategories:", error);
-            });
-    }
+    // const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    //     const selectedCategoryId = event.target.value;
+    //     if (selectedCategoryId === "All") {
+    //         setSelectedCategory("");
+    //         setSelectedSubcategory("");
+    //         setSelectedBrand("");
+    //         // setCategories([]);
+    //         setSubcategories([]);
+    //         setBrands([]);
+    //         setProducts([]);
+    //         return;
+    //     } else {
+    //         setSelectedCategory(selectedCategoryId);
+    //         setSelectedSubcategory("");
+    //         setSelectedBrand("");
+    //     }
+    //     console.log("Selected Category ID:", selectedCategoryId);
+    //     fetch(`http://localhost:3001/subcategories?categoryId=${selectedCategoryId}`, {method: "GET",})
+    //         .then((response) => response.json())
+    //         .then((data) => {
+    //             setSubcategories(data);
+    //         })
+    //         .catch((error) => {
+    //             console.error("Error fetching subcategories:", error);
+    //         });
+    // }
 
-    const handleSubcategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const selectedSubcategoryId = event.target.value;
-        if (selectedSubcategoryId === "All") {
-            setSelectedSubcategory("");
-            setSelectedBrand("");
-            setSubcategories([]);
-            setBrands([]);
-            setProducts([]);
-            return;
-        }
+    // const handleSubcategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    //     const selectedSubcategoryId = event.target.value;
+    //     if (selectedSubcategoryId === "All") {
+    //         setSelectedSubcategory("");
+    //         setSelectedBrand("");
+    //         setSubcategories([]);
+    //         setBrands([]);
+    //         setProducts([]);
+    //         return;
+    //     }
 
-        setSelectedSubcategory(selectedSubcategoryId);
-        setSelectedBrand("");
-        console.log("Selected Subcategory ID:", selectedSubcategoryId);
-        fetch(`http://localhost:3001/brands?subCategoryId=${selectedSubcategoryId}`, {method: "GET",})
-            .then((response) => response.json())
-            .then((data) => {
-                // Handle the items data as needed
-                setBrands(data);
-            })
-            .catch((error) => {
-                console.error("Error fetching items:", error);
-            });
-        // Handle subcategory change if needed
-    }
+    //     setSelectedSubcategory(selectedSubcategoryId);
+    //     setSelectedBrand("");
+    //     console.log("Selected Subcategory ID:", selectedSubcategoryId);
+    //     fetch(`http://localhost:3001/brands?subCategoryId=${selectedSubcategoryId}`, {method: "GET",})
+    //         .then((response) => response.json())
+    //         .then((data) => {
+    //             // Handle the items data as needed
+    //             setBrands(data);
+    //         })
+    //         .catch((error) => {
+    //             console.error("Error fetching items:", error);
+    //         });
+    //     // Handle subcategory change if needed
+    // }
 
-    const handleBrandChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const selectedBrandId = event.target.value;
-        if (selectedBrandId === "All") {
-            setSelectedBrand("");
-            setBrands([]);
-            setProducts([]);
-            return;
-        }
-        setSelectedBrand(selectedBrandId);
-        console.log("Selected Brand ID:", selectedBrandId);
-        fetch(`http://localhost:3001/products?brandId=${selectedBrandId}`, {method: "GET",})
-            .then((response) => response.json())
-            .then((data) => {
-                // Handle the products data as needed
-                console.log("Products for selected brand:", data);
-                setProducts(data);
-            })
-            .catch((error) => {
-                console.error("Error fetching products:", error);
-            });
-        // Handle brand change if needed
+    // const handleBrandChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    //     const selectedBrandId = event.target.value;
+    //     if (selectedBrandId === "All") {
+    //         setSelectedBrand("");
+    //         setBrands([]);
+    //         setProducts([]);
+    //         return;
+    //     }
+    //     setSelectedBrand(selectedBrandId);
+    //     console.log("Selected Brand ID:", selectedBrandId);
+    //     fetch(`http://localhost:3001/products?brandId=${selectedBrandId}`, {method: "GET",})
+    //         .then((response) => response.json())
+    //         .then((data) => {
+    //             // Handle the products data as needed
+    //             console.log("Products for selected brand:", data);
+    //             setProducts(data);
+    //         })
+    //         .catch((error) => {
+    //             console.error("Error fetching products:", error);
+    //         });
+    //     // Handle brand change if needed
 
-    }
+    // }
 
-    const handleButtonResetClick = () => {
-        // Handle button click event
-        setSubcategories([]);
-        setBrands([]);
-        setProducts([]);
-        setSelectedBrand("");
-        setSelectedSubcategory("");
-        setSelectedCategory("");
-    }
+    // const handleButtonResetClick = () => {
+    //     // Handle button click event
+    //     setSubcategories([]);
+    //     setBrands([]);
+    //     setProducts([]);
+    //     setSelectedBrand("");
+    //     setSelectedSubcategory("");
+    //     setSelectedCategory("");
+    // }
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
       <nav className="product-breadcrumb" aria-label="breadcrumb">
          Home 
-          {selectedCategory && ` > ${categories.find(categories => categories.id === selectedCategory)?.name || ''}`}
-          {selectedSubcategory && ` > ${subcategories.find(subcategories => subcategories.id === selectedSubcategory)?.name || ''}`}
-          {selectedBrand && ` > ${brands.find(brands => brands.id === selectedBrand)?.name || ''}`}
+          {selectedCategoryparam && ` > ${categories.find(categories => categories.id === selectedCategoryparam)?.name || ''}`}
+          {selectedSubcategoryparam && ` > ${subcategories.find(subcategories => subcategories.id === selectedSubcategoryparam)?.name || ''}`}
+          {selectedBrandparam && ` > ${brands.find(brands => brands.id === selectedBrandparam)?.name || ''}`}
       </nav>  
       <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
         Main Category Item
       </h1>
-      <select onChange={(e) => updateURL("category", e.target.value)} className="mt-4 p-2 border border-gray-300 rounded" name="category">
+      <select value={selectedCategoryparam || "All"} onChange={(e) => updateURL("category", e.target.value)} className="mt-4 p-2 border border-gray-300 rounded" name="category">
           <option value="All">Choose From The Options Here</option>
         {categories.map((item) => (
           <option key={item.id} value={item.id}>
@@ -198,7 +198,7 @@ useEffect(() => {
           </option>
         ))}
       </select>
-      <select onChange={(e) => updateURL("subcategory", e.target.value)} className="mt-4 p-2 border border-gray-300 rounded" name="subcategory">
+      <select value={selectedSubcategoryparam || "All"} onChange={(e) => updateURL("subcategory", e.target.value)} className="mt-4 p-2 border border-gray-300 rounded" name="subcategory">
           <option value="All">Choose From The Options Here</option>
         {subcategories.map((item) => (
           <option key={item.id} value={item.id}>
@@ -206,7 +206,7 @@ useEffect(() => {
           </option>
         ))}
       </select>
-      <select onChange={(e) => updateURL("brand", e.target.value)} className="mt-4 p-2 border border-gray-300 rounded" name="brand">
+      <select value={selectedBrandparam || "All"}  onChange={(e) => updateURL("brand", e.target.value)} className="mt-4 p-2 border border-gray-300 rounded" name="brand">
         <option value="All">Choose From The Options Here</option>
         {brands.map((item) => (
           <option key={item.id} value={item.id}>
@@ -218,21 +218,27 @@ useEffect(() => {
         Reset
       </button>
       <br></br>
+      <div className='flex justify-center p-5 gap-5'>
       { 
        selectedBrandparam!== "" ?         
        products.map((item) => (
-        <section key={item.id}>
-            <div key={item.id} className="flex flex-col items-center justify-center bg-zinc-50 font-sans dark:bg-black">
+        <section key={item.id} className='inline'>
+            <div key={item.id} className="flex flex-col items-center justify-center bg-zinc-50 font-sans dark:bg-black p-5 rounded-lg border border-gray-300">
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white">{item.name}</h2>
+              <br></br>
+              <p className="text-gray-700 dark:text-gray-300">Rp{item.price.toFixed(2)}</p>
             </div>
         </section>)) 
         : allproducts.map((item) => (
-        <section key={item.id}>
-            <div key={item.id} className="flex flex-col items-center justify-center bg-zinc-50 font-sans dark:bg-black">
+        <section key={item.id} className='inline'>
+            <div key={item.id} className="flex flex-col items-center justify-center bg-zinc-50 font-sans dark:bg-black p-5 rounded-lg border border-gray-300 ">
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white">{item.name}</h2>
+              <br></br>
+              <p className="text-gray-700 dark:text-gray-300">Rp{item.price.toFixed(2)}</p>
             </div>
         </section>))
       }
+      </div>
 
 
     </div>
