@@ -186,12 +186,15 @@ useEffect(() => {
           {selectedCategoryparam && ` > ${categories.find(categories => categories.id === selectedCategoryparam)?.name || ''}`}
           {selectedSubcategoryparam && ` > ${subcategories.find(subcategories => subcategories.id === selectedSubcategoryparam)?.name || ''}`}
           {selectedBrandparam && ` > ${brands.find(brands => brands.id === selectedBrandparam)?.name || ''}`}
-      </nav>  
-      <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
+      </nav> 
+      <br></br> 
+      <h1 className="text-4xl font-bold text-gray-900 dark:text-white animate-bounce">
         Main Category Item
       </h1>
+      <br></br>
+      <div className="flex items-center justify-center gap-3 bg-zinc-50 font-sans dark:bg-black p-5 rounded-lg border border-gray-300">
       <select value={selectedCategoryparam || "All"} onChange={(e) => updateURL("category", e.target.value)} className="mt-4 p-2 border border-gray-300 rounded" name="category">
-          <option value="All">Choose From The Options Here</option>
+          <option value="All">Choose Category</option>
         {categories.map((item) => (
           <option key={item.id} value={item.id}>
             {item.name}
@@ -199,7 +202,7 @@ useEffect(() => {
         ))}
       </select>
       <select value={selectedSubcategoryparam || "All"} onChange={(e) => updateURL("subcategory", e.target.value)} className="mt-4 p-2 border border-gray-300 rounded" name="subcategory">
-          <option value="All">Choose From The Options Here</option>
+          <option value="All">Choose Sub Category</option>
         {subcategories.map((item) => (
           <option key={item.id} value={item.id}>
             {item.name}
@@ -207,13 +210,14 @@ useEffect(() => {
         ))}
       </select>
       <select value={selectedBrandparam || "All"}  onChange={(e) => updateURL("brand", e.target.value)} className="mt-4 p-2 border border-gray-300 rounded" name="brand">
-        <option value="All">Choose From The Options Here</option>
+        <option value="All">Choose Brand</option>
         {brands.map((item) => (
           <option key={item.id} value={item.id}>
             {item.name}
           </option>
         ))}
       </select>
+      </div>
       <button className="mt-4 px-4 py-2 bg-blue-500 text-white rounded" onClick={resetFilters}>
         Reset
       </button>
